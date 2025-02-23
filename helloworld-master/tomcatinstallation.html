@@ -1,0 +1,34 @@
+Second EC2 Instance (Amazon Linux 2): Tomcat Server
+Add HTTP, HTTPS, Port 8080 in Tomcat EC2 Instance Security Group
+
+cd /opt
+sudo yum update -y
+sudo yum install java -y
+sudo su -
+wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.17/bin/apache-tomcat-10.1.17.tar.gz (You can get it from https://tomcat.apache.org/download-10.cgi)
+tar -xvzf apache-tomcat-10.1.17.tar.gz
+mv apache-tomcat-10.1.17.tar.gz tomcat
+ls
+ls -al
+clear
+chmod +x startup.sh
+ls -al
+clear
+chmod +x shutdown.sh
+./startup.sh
+
+Check the server, ipaddress:8080
+Add comment to block access for local host only starts with valve (first two line)
+nano /opt/tomcat/webapps/host-manager/META-INF/context.xml
+nano /opt/tomcat/webapps/manager/META-INF/context.xml
+Comment starts with <!--
+Comment ends with -->
+nano /opt/tomcat/conf/tomcat-users.xml
+Copy and paste the code at the end of the file before the last tag
+<role rolename="manager-gui"/>
+<role rolename="manager-script"/>
+<role rolename="manager-jmx"/>
+<role rolename="manager-status"/>
+<user username="admin" password="admin" roles="manager-gui, manager-script, manager-jmx, manager-status"/>
+<user username="deployer" password="deployer" roles="manager-script"/>
+<user username="tomcat" password="s3cret" roles="manager-gui"/>
